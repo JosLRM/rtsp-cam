@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Stream RTSP en HTML</title>
+  <script src="./libs/jsmpeg.min.js"></script>
+</head>
+<body>
+  <h1>Vista de Cámara</h1>
+  <canvas id="video-canvas" style="display:block; height:500px; width:auto;"></canvas>
+  <button type="button" id="play-video">Ver</button>
+
+  <script>
+    const url = `ws://${location.host}/api/stream`; // se conecta al servidor Node
+    const canvas = document.getElementById('video-canvas');
+    new JSMpeg.Player(url, { canvas: canvas });
+    // let player = null; // <- guardar referencia global
+
+    // const playBtn = document.getElementById('play-video');
+    // playBtn.addEventListener('click', function () {
+    //   const canvas = document.getElementById('video-canvas');
+
+    //   // Crear player solo si no existe
+    //   if (!player) {
+    //     const url = 'ws://localhost:9999';
+    //     player = new JSMpeg.Player(url, { canvas: canvas });
+    //     canvas.style.display = 'block';
+    //   }
+    // });
+  </script>
+</body>
+</html>
