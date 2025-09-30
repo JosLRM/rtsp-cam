@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario con Folio</title>
+    <style>
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .oculto {
+            display: none;
+        }
+
+        /* Estilo para el fondo oscuro */
+        #customAlertOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        /* Estilo para el cuadro de alerta */
+        #customAlertBox {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 300px;
+        }
+
+        #customAlertBox h2 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        #customAlertBox p {
+            margin: 0 0 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        #customAlertBox button {
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #customAlertBox button:hover {
+            background: #0056b3;
+        }
+        textarea{
+            resize: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Formulario</h2>
+    <form id="miFormulario" method="post" action="procesar.php">
+
+        <label>¿Existe folio?</label>
+        <input type="radio" name="existe_folio" value="si" onclick="mostrarCampo('si')"> Sí
+        <input type="radio" name="existe_folio" value="no" onclick="mostrarCampo('no')"> No
+
+        <!-- Campo folio -->
+        <div id="campo_folio" class="oculto">
+            <label for="no_folio">Número de folio:</label>
+            <input type="text" name="no_folio" id="no_folio">
+        </div>
+
+        <!-- Campo justificación -->
+        <div id="campo_justificacion" class="oculto">
+            <label for="justificacion">Justificación:</label>
+            <textarea name="justificacion" id="justificacion" rows="4" cols="50"></textarea>
+        </div>
+
+        <br>
+        <input type="submit" value="Enviar todo">
+    </form>
+    <!-- Contenedor de la alerta -->
+    <div id="customAlertOverlay">
+        <div id="customAlertBox">
+            <h2>¡Alerta!</h2>
+            <p id="alerta"></p>
+            <button onclick="closeCustomAlert()">Aceptar</button>
+        </div>
+    </div>
+    <script>
+        function mostrarCampo(opcion) {
+            var folio = document.getElementById("campo_folio");
+            var justificacion = document.getElementById("campo_justificacion");
+            var inputFolio = document.getElementById('no_folio');
+            var inputJustificacion = document.getElementById('justificacion');
+
+            if (opcion === "si") {
+                folio.style.display = "block";
+                inputFolio.required = true;
+                justificacion.style.display = "none";
+            } else {
+                folio.style.display = "none";
+                inputJustificacion.required = true;
+                justificacion.style.display = "block";
+            }
+        }
+
+        document.getElementById("miFormulario").addEventListener("submit", function(event) {
+            var opcion = document.querySelector('input[name="existe_folio"]:checked');
+
+            if (!opcion) {
+                showCustomAlert('Seleccione una opcion Si/No');
+                event.preventDefault();
+                return;
+            }
+
+            if (opcion.value === "si") {
+                var folio = document.getElementById("no_folio").value.trim();
+                if (folio === "") {
+                    showCustomAlert('Agregar un Folio');
+                    event.preventDefault();
+                }
+            } else {
+                var justificacion = document.getElementById("justificacion").value.trim();
+                if (justificacion === "") {
+                    showCustomAlert('Agregar una justificacion');
+                    event.preventDefault();
+                }
+            }
+        });
+
+        // Función para mostrar la alerta
+        function showCustomAlert(message) {
+            document.getElementById('customAlertOverlay').style.display = 'flex';
+            document.getElementById('alerta').innerHTML = `${message}`;
+        }
+
+        // Función para cerrar la alerta
+        function closeCustomAlert() {
+            document.getElementById('customAlertOverlay').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>
