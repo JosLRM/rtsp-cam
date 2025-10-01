@@ -64,7 +64,8 @@
         #customAlertBox button:hover {
             background: #0056b3;
         }
-        textarea{
+
+        textarea {
             resize: none;
         }
     </style>
@@ -72,6 +73,7 @@
 
 <body>
     <h2>Formulario</h2>
+    <input type="checkbox" id="aceptar">Aceptar
     <form id="miFormulario" method="post" action="procesar.php">
 
         <label>¿Existe folio?</label>
@@ -125,16 +127,16 @@
                 folio.style.display = "block";
                 inputFolio.required = true;
                 justificacion.style.display = "none";
-                etiqueta.textContent='Folio'
+                etiqueta.textContent = 'Folio'
             } else {
                 folio.style.display = "none";
                 inputJustificacion.required = true;
                 justificacion.style.display = "block";
-                etiqueta.textContent='Justificacion';
+                etiqueta.textContent = 'Justificacion';
             }
         }
 
-        document.getElementById("miFormulario").addEventListener("submit", function(event) {
+        document.getElementById("miFormulario").addEventListener("submit", function (event) {
             var opcion = document.querySelector('input[name="existe_folio"]:checked');
 
             if (!opcion) {
@@ -155,6 +157,11 @@
                     showCustomAlert('Agregar una justificacion');
                     event.preventDefault();
                 }
+            }
+            if (!aceptar.checked) {
+                showCustomAlert('Debes aceptar antes de continuar');
+                event.preventDefault();
+                return;
             }
         });
 
