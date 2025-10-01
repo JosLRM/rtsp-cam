@@ -101,7 +101,20 @@
             <button onclick="closeCustomAlert()">Aceptar</button>
         </div>
     </div>
+    <table>
+        <tr>
+            <td>animales</td>
+            <td class="etiqueta"></td>
+            <td>frutas</td>
+        </tr>
+        <tr>
+            <td>perro</td>
+            <td></td>
+            <td>naranja</td>
+        </tr>
+    </table>
     <script>
+        var etiqueta = document.getElementsByClassName('etiqueta')[0];
         function mostrarCampo(opcion) {
             var folio = document.getElementById("campo_folio");
             var justificacion = document.getElementById("campo_justificacion");
@@ -112,10 +125,12 @@
                 folio.style.display = "block";
                 inputFolio.required = true;
                 justificacion.style.display = "none";
+                etiqueta.textContent='Folio'
             } else {
                 folio.style.display = "none";
                 inputJustificacion.required = true;
                 justificacion.style.display = "block";
+                etiqueta.textContent='Justificacion';
             }
         }
 
