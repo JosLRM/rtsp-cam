@@ -91,8 +91,31 @@
             <label for="justificacion">Justificación:</label>
             <textarea name="justificacion" id="justificacion" rows="4" cols="50"></textarea>
         </div>
-
+        <label for="fecha_nacimiento_vci">Fecha de nacimiento</label>
+        <input type="date" name="fecha_nacimiento_vci" id="fecha_nacimiento_vci">
         <br>
+        <hr>
+        <select id="miSelect">
+                <option value="">-- Selecciona --</option>
+                <option value="si">Sí</option>
+                <option value="no">No</option>
+            </select>
+            <hr>
+        <div id="datos_seguro" style="display: none;">
+            <table class="tabla-poliza">
+                <tr>
+                    <td>Número de Póliza</td>
+                    <td>Compañía de Seguro</td>
+                    <td>Nombre de ajustador</td>
+                </tr>
+                <tr>
+                    <td><input type="text" id="poliza_seguro_vci" name="poliza_seguro_vci"></td>
+                    <td><input type="text" id="compania_seguro_vci" name="compania_seguro_vci"></td>
+                    <td><input type="text" id="nombre_ajustador_vci" name="nombre_ajustador_vci"></td>
+                </tr>
+            </table>
+        </div>
+        <hr>
         <input type="submit" value="Enviar todo">
     </form>
     <!-- Contenedor de la alerta -->
@@ -111,10 +134,32 @@
         </tr>
         <tr>
             <td>perro</td>
-            <td></td>
+            <td id="etiqueta1"></td>
             <td>naranja</td>
         </tr>
     </table>
+
+
+    <div id="datos_seguro" style="display: none;">
+        <select id="miSelect">
+            <option value="">-- Selecciona --</option>
+            <option value="si">Sí</option>
+            <option value="no">No</option>
+        </select>
+        <table class="tabla-poliza">
+            <tr>
+                <td>Número de Póliza</td>
+                <td>Compañía de Seguro</td>
+                <td>Nombre de ajustador</td>
+            </tr>
+            <tr>
+                <td><input type="text" id="poliza_seguro_vci" name="poliza_seguro_vci"></td>
+                <td><input type="text" id="compania_seguro_vci" name="compania_seguro_vci"></td>
+                <td><input type="text" id="nombre_ajustador_vci" name="nombre_ajustador_vci"></td>
+            </tr>
+        </table>
+    </div>
+
     <script>
         var etiqueta = document.getElementsByClassName('etiqueta')[0];
         function mostrarCampo(opcion) {
@@ -175,7 +220,52 @@
         function closeCustomAlert() {
             document.getElementById('customAlertOverlay').style.display = 'none';
         }
+        window.addEventListener('DOMContentLoaded', function () {
+            const inputFecha = document.getElementById('fecha_nacimiento_vci');
+            const hoy = new Date();
+            const fechaLimite = new Date(hoy.getFullYear() - 18, hoy.getMonth(), hoy.getDate());
+
+            // Formatear como YYYY-MM-DD
+            const yyyy = fechaLimite.getFullYear();
+            const mm = String(fechaLimite.getMonth() + 1).padStart(2, '0');
+            const dd = String(fechaLimite.getDate()).padStart(2, '0');
+            const fechaFormateada = `${yyyy}-${mm}-${dd}`;
+
+            inputFecha.max = fechaFormateada;
+            inputFecha.value = fechaFormateada;
+        });
+
+
+        function gestionarCamposSeguro(opcion) {
+            const datosSeguro = document.getElementById('datos_seguro');
+            const poliza = document.getElementById('poliza_seguro_vci');
+            const compania = document.getElementById('compania_seguro_vci');
+            const ajustador = document.getElementById('nombre_ajustador_vci');
+
+            if (opcion === "si") {
+                datosSeguro.style.display = "block";
+                poliza.required = true;
+                compania.required = true;
+                ajustador.required = true;
+            } else {
+                datosSeguro.style.display = "none";
+                poliza.required = false;
+                compania.required = false;
+                ajustador.required = false;
+
+                // Limpiar campos
+                poliza.value = '';
+                compania.value = '';
+                ajustador.value = '';
+            }
+        }
+        document.getElementById('miSelect').addEventListener('change', function () {
+            const opcion = this.value;
+            gestionarCamposSeguro(opcion); // ✅ Ejecuta tu función personalizada
+        });
+
     </script>
+
 </body>
 
 </html>
